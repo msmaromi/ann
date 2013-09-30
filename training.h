@@ -20,7 +20,7 @@ using namespace std;
 class Training {
 public:
     Training();
-    Training(string, int); // paramater file string
+    Training(string, int); // paramater file: string, 
     Training(Training&);
     ~Training();
     
@@ -47,7 +47,7 @@ private:
     int maxIteration;
     
     void extractFile(string);
-    void extractAttribute();
+    void extractAttribute(string);
 };
 
 #endif /* defined(____training__) */

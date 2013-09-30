@@ -12,10 +12,9 @@ Training::Training() {
     
 }
 
-Training::Training(string file) {
-    targetAttribute = "robot";
-    extractAttribute();
-    extractFile(file);
+Training::Training(string file, int) {
+    extractAttribute(file);
+    //extractFile(file);
 }
 
 Training::Training(Training& tr) {
@@ -71,31 +70,80 @@ void Training::extractFile(string file) {
     }
 }
 
-void Training::extractAttribute() {
-    attribute["head"].push_back("1");
-    attribute["head"].push_back("2");
-    attribute["head"].push_back("3");
-    attribute["body"].push_back("1");
-    attribute["body"].push_back("2");
-    attribute["body"].push_back("3");
-    attribute["smile"].push_back("1");
-    attribute["smile"].push_back("2");
-    attribute["hold"].push_back("1");
-    attribute["hold"].push_back("2");
-    attribute["hold"].push_back("3");
-    attribute["jacket"].push_back("1");
-    attribute["jacket"].push_back("2");
-    attribute["jacket"].push_back("3");
-    attribute["jacket"].push_back("4");
-    attribute["tie"].push_back("1");
-    attribute["tie"].push_back("2");
+void Training::extractAttribute(string file) {
+    string strLine;
+    ifstream readFile;
+    readFile.open(file.c_str());
+    if (readFile.is_open()) {
+        bool findRelation = false;
+        bool findAttribute = false;
+        bool findData = false;
+        int indexAttr = 0;
+        while (!readFile.eof() && !findData) {            
+            getline(readFile, strLine);
+            char * token;
+            char * cstr = new char[strLine.length()+1];
+            strcpy(cstr, strLine.c_str());
+
+            if (strLine.find("@RELATION")!=string::npos) {
+                findRelation = true;
+            } else if (strLine.find("@ATTRIBUTE")!=string::npos) {
+                findAttribute = true;
+                findRelation = false;
+            } else if (strLine.find("@DATA")!=string::npos) {
+                findData = true;
+                findAttribute = false;
+            }
+
+            token = strtok(cstr, " "); // parse dalam satu line
+            int x = 0;            
+            while (token!=NULL && x<3) {
+                string tokenStr(token);                
+                if (x==1) {                    
+                    if (findRelation) {
+                        targetAttribute = tokenStr;
+                    } else if (findAttribute) {
+                        attributeIndex.push_back(tokenStr);
+                    }
+                } else if (x==2) { //memasukkan values
+                    char * tokenValue = strtok(token, ","); //parse dalam kumpulan values
+                    while (tokenValue!=NULL) {
+                        string tokenValueStr(tokenValue);
+                        attribute[attributeIndex[indexAttr]].push_back(tokenValueStr);
+                        tokenValue = strtok(NULL, ",");
+                    }
+                    indexAttr++;
+                }
+                token = strtok(NULL, " ");
+                x++;
+            }
+        }
+    }
     
-    attributeIndex.push_back("head");
-    attributeIndex.push_back("body");
-    attributeIndex.push_back("smile");
-    attributeIndex.push_back("hold");
-    attributeIndex.push_back("jacket");
-    attributeIndex.push_back("tie");
+//    attribute["head"].push_back("1");
+//    attribute["head"].push_back("2");
+//    attribute["head"].push_back("3");
+//    attribute["body"].push_back("1");
+//    attribute["body"].push_back("2");
+//    attribute["body"].push_back("3");
+//    attribute["smile"].push_back("1");
+//    attribute["smile"].push_back("2");
+//    attribute["hold"].push_back("1");
+//    attribute["hold"].push_back("2");
+//    attribute["hold"].push_back("3");
+//    attribute["jacket"].push_back("1");
+//    attribute["jacket"].push_back("2");
+//    attribute["jacket"].push_back("3");
+//    attribute["jacket"].push_back("4");
+//    attribute["tie"].push_back("1");
+//    attribute["tie"].push_back("2");
+//    
+//    attributeIndex.push_back("head");
+//    attributeIndex.push_back("body");
+//    attributeIndex.push_back("smile");
+//    attributeIndex.push_back("hold");
+//    attributeIndex.push_back("jacket");
+//    attributeIndex.push_back("tie");
 }
 
 vector<string> Training::getAttributeValues(string attr){
@@ -158,7 +206,6 @@ void Training::deleteAttribute(string attr) {
 void Training::deleteInstance(int index) {
     data.erase(data.begin()+index);
 }
-
 
 
 
