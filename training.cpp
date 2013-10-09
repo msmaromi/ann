@@ -12,9 +12,11 @@ Training::Training() {
     
 }
 
-Training::Training(string file, int) {
+Training::Training(string file, int iteration) {
+    maxIteration = iteration;
     extractAttribute(file);
     extractData(file);
+    convert();
 }
 
 Training::Training(Training& tr) {
@@ -35,6 +37,7 @@ Training::Training(Training& tr) {
     for (int i=0; i<tr.getNumberAttribute(); i++) {
         attributeIndex.push_back(tr.getAttribute(i));
     }
+    convert();
 }
 
 Training::~Training() {
@@ -135,6 +138,10 @@ vector<string> Training::getAttributeValues(string attr){
     return attribute[attr];
 }
 
+void Training::setAttributeValues(string attr, vector<string> v) {
+    attribute[attr] = v;
+}
+
 string Training::getTargetAttribute() {
     return targetAttribute;
 }
@@ -143,6 +150,10 @@ string Training::getDataValue(int i, string attr) {
     if (i<getNumberData()) {
         return data[i][attr];
     }
+}
+
+int Training::getDataValueConverted(string val) {
+    return convertValues[val];
 }
 
 vector< map<string, string> > Training::getDataVector() {
@@ -191,6 +202,34 @@ void Training::deleteAttribute(string attr) {
 void Training::deleteInstance(int index) {
     data.erase(data.begin()+index);
 }
+
+int Training::getMaxIteration() {
+    return maxIteration;
+}
+
+void Training::convert() {
+    convertValues["sunny"] = 1;
+    convertValues["overcast"] = 0;
+    convertValues["rain"] = -1;
+    
+    convertValues["hot"] = 0;
+    convertValues["mild"] = 1;
+    convertValues["cold"] = -1;
+    
+    convertValues["high"] = 0;
+    convertValues["normal"] = 1;
+    
+    convertValues["strong"] = 0;
+    convertValues["weak"] = 1;
+    
+    convertValues["yes"] = 1;
+    convertValues["no"] = 0;
+}
+
+
+
+
+
 
 
 
