@@ -1,4 +1,4 @@
-@RELATION PlayTennis
+@RELATION playtennis
 
 @ATTRIBUTE outlook sunny,overcast,rain
 @ATTRIBUTE temperature hot,mild,cool

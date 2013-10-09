@@ -7,10 +7,11 @@
 //
 
 #include "training.h"
-#include "id3.h"
+#include "ann.h"
+//#include "ann.h"
 using namespace std;
 
-string predictTree(Tree tree, Training sample, int index) { // menghasilkan "yes" atau "no"
+/*string predictTree(Tree tree, Training sample, int index) { // menghasilkan "yes" atau "no"
     if (tree.isLeaf()) {
         return tree.getData();
     } else {
@@ -29,7 +30,7 @@ double accuracy (Tree tree, Training ref) { // dalam %
         }
     }
     return 100*(correct/ref.getNumberData());
-}
+}*/
 
 
 
@@ -39,13 +40,11 @@ int main() {
     cout << "masukkan file training arff..." << endl;
     
     cin >> namaFile;
-    Training tr(namaFile);
-    ID3 learner;
-    Tree *model = new Tree();
-    learner.classification(tr, model);
-    model->printTree();
-    Training tes("test3.arff");
-    cout << "akurasi= " << accuracy(*model, tr) << "%" << endl;
+    Training tr(namaFile, 0);
+    Training tr1 = tr;
+    ANN ann(tr);
+    cout << ann.activeFunction() << endl;
+    cout << ann.outputFunction(1) << endl;
 }
 
 

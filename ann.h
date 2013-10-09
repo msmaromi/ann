@@ -13,22 +13,24 @@
 #include "Training.h"
 
 class ANN {
+public:
     ANN();
     ANN(Training);
     ANN(const ANN&);
-    operator=(ANN&);
+    ANN& operator=(const ANN&);
     ~ANN();
     
-    activeFunction();
-    output(int); // 1=sigmoid, 2=step
-    annBatch(Training);
-    annIncremental(Training);        
+    double activeFunction();
+    int outputFunction(int); // 1=sigmoid, 2=step
+    void annBatch(Training);
+    void annIncremental(Training);
     
 private:
-    int N;// banyak atr
-    vector<int> listW; // array of w
+    int n;// banyak atribut
+    vector<double> listW; // array of w
     vector<int> listX; // array of x
     int output;
-}
+    Training dataset;
+};
 
 #endif /* defined(____ann__) */

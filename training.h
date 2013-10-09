@@ -22,13 +22,14 @@ public:
     Training();
     Training(string, int); // paramater file: string, maxIteration: int
     Training(Training&);
+    Training& operator=(Training&);
     ~Training();
     
     vector<string> getAttributeValues(string); //menampilkan value2 atribut tertentu
     void setAttributeValues(string, vector<string>);
     string getTargetAttribute();
     string getDataValue(int, string); // index ke berapa, atribut apa
-    int getDataValueConverted(string);
+    int getDataValueConverted(int, string);
     vector< map<string, string> > getDataVector();
     
     string getAttribute(int); //

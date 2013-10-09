@@ -34,10 +34,33 @@ Training::Training(Training& tr) {
         content[targetAttribute] = (tr.data)[j][targetAttribute];
         data.push_back(content);
     }
-    for (int i=0; i<tr.getNumberAttribute(); i++) {
+    for (int i=0; i<tr.attributeIndex.size(); i++) {
         attributeIndex.push_back(tr.getAttribute(i));
     }
     convert();
+}
+
+Training& Training::operator=(Training& tr) {
+    targetAttribute = tr.targetAttribute;
+    for (map<string, vector<string> >::const_iterator it=tr.attribute.begin(); it!=tr.attribute.end(); it++) {
+        for (int i=0; i<it->second.size(); i++) {
+            attribute[it->first].push_back(it->second[i]);
+        }
+    }
+    for (int j=0; j<tr.getNumberData(); j++) {
+        map<string, string> content;
+        for (map<string, vector<string> >::const_iterator it=attribute.begin(); it!=attribute.end(); it++) {
+            content[it->first] = (tr.data)[j][it->first];
+        }
+        content[targetAttribute] = (tr.data)[j][targetAttribute];
+        data.push_back(content);
+    }
+    for (int i=0; i<tr.attributeIndex.size(); i++) {
+        attributeIndex.push_back(tr.getAttribute(i));
+    }
+    convert();
+    
+    return *this;
 }
 
 Training::~Training() {
@@ -152,8 +175,8 @@ string Training::getDataValue(int i, string attr) {
     }
 }
 
-int Training::getDataValueConverted(string val) {
-    return convertValues[val];
+int Training::getDataValueConverted(int i, string attr) {
+    return convertValues[getDataValue(i, attr)];
 }
 
 vector< map<string, string> > Training::getDataVector() {
