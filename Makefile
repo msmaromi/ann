@@ -1,6 +1,7 @@
 all : robolearn
 
-pokeranch : training.o ann.o robolearn.o
+robolearn : training.o ann.o robolearn.o
+	g++ -o robolearn training.o ann.o robolearn.o
 
 training.o : training.cpp
 	g++ -c training.cpp
