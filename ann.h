@@ -10,20 +10,23 @@
 #define ____ann__
 
 #include <iostream>
-#include "Training.h"
+#include "training.h"
 
 class ANN {
 public:
     ANN();
-    ANN(Training);
+    ANN(Training, int, int);
     ANN(const ANN&);
     ANN& operator=(const ANN&);
     ~ANN();
     
     double activeFunction();
     int outputFunction(int); // 1=sigmoid, 2=step
-    void annBatch(Training);
-    void annIncremental(Training);
+    void annBatch(Training, int);
+    void annIncremental(Training, int);
+    
+    void setListX(vector<int>);
+    vector<double> getListW();
     
 private:
     int n;// banyak atribut

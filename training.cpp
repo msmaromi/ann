@@ -231,13 +231,13 @@ int Training::getMaxIteration() {
 }
 
 void Training::convert() {
-    convertValues["sunny"] = 1;
-    convertValues["overcast"] = 0;
-    convertValues["rain"] = -1;
+    convertValues["sunny"] = 2;
+    convertValues["overcast"] = 1;
+    convertValues["rain"] = 0;
     
-    convertValues["hot"] = 0;
+    convertValues["hot"] = 2;
     convertValues["mild"] = 1;
-    convertValues["cold"] = -1;
+    convertValues["cold"] = 0;
     
     convertValues["high"] = 0;
     convertValues["normal"] = 1;
@@ -248,6 +248,11 @@ void Training::convert() {
     convertValues["yes"] = 1;
     convertValues["no"] = 0;
 }
+
+//void Training::convert() {
+//    convertValues["1"] = 1;
+//    convertValues["0"] = 0;    
+//}
 
 
 

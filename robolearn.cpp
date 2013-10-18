@@ -8,32 +8,27 @@
 
 #include "training.h"
 #include "ann.h"
-//#include "ann.h"
 using namespace std;
 
-/*string predictTree(Tree tree, Training sample, int index) { // menghasilkan "yes" atau "no"
-    if (tree.isLeaf()) {
-        return tree.getData();
-    } else {
-        string optionValue = sample.getDataValue(index, tree.getData());
-        Tree *child = tree.findTree(optionValue);
-        return predictTree(*child, sample, index);
-    }
+int predict(ANN ann) { //menghasilkan "1" atau "0" yang berasosiasi dengan "yes" atau "no"
+    return ann.outputFunction(1);
 }
 
-double accuracy (Tree tree, Training ref) { // dalam %
+double accuracy(ANN ann, Training ref) {
     cout << "menghitung akurasi..." << endl;
     double correct = 0;
     for (int i=0; i<ref.getNumberData(); i++) {
-        if (predictTree(tree, ref, i)==ref.getDataValue(i, ref.getTargetAttribute())) {
+        vector<int> list;
+        for (int j=0; j<ref.getNumberAttribute(); j++) {
+            list.push_back(ref.getDataValueConverted(i, ref.getAttribute(j)));
+        }
+        ann.setListX(list);
+        if (predict(ann)==ref.getDataValueConverted(i, ref.getTargetAttribute())) {
             correct++;
         }
     }
     return 100*(correct/ref.getNumberData());
-}*/
-
-
-
+}
 
 int main() {
     string namaFile;
@@ -42,9 +37,19 @@ int main() {
     cin >> namaFile;
     Training tr(namaFile, 0);
     Training tr1 = tr;
-    ANN ann(tr);
-    cout << ann.activeFunction() << endl;
-    cout << ann.outputFunction(1) << endl;
+    ANN ann(tr, 2, 2);
+	vector <double> listW = ann.getListW();
+    cout << "------------" << endl;
+	for (int i = 0 ; i < listW.size() ; i++){
+		//cout<<listW[i]<<endl;
+        printf("w%d: ", i);
+        printf("%.2f\n", listW[i]);
+	}
+//    for (int i=0; i<tr.getNumberAttribute(); i++) {
+//        cout << tr.getDataValueConverted(2, tr.getAttribute(i)) << " ";
+//    }
+//    cout << endl;
+    
 }
 
 
